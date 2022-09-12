@@ -1,6 +1,6 @@
-#include "../header/screen.h"
+#include "screen.h"
 
-void init ()
+void screen::init ()
 {
     tft.reset();
     tft.begin(tft.readID());

@@ -1,10 +1,12 @@
 //including libraries
-#include "header/screen.h"
+#include "screen.h"
+
+screen tft;
 
 //set and initialize
 void setup ()
 {
-    init();
+    tft.init();
 }
 
 //game loop
