@@ -12,6 +12,7 @@ private:
 public:
     //initialize tft screen
     void init();
+    void draw_bg();
 };
 
 #endif

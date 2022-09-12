@@ -12,10 +12,10 @@ void setup ()
 //game loop
 void loop ()
 {
-
+  tft.draw_bg();
 }
 
-//game menu
+//game menu;
 void menu ()
 {
 

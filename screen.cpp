@@ -6,3 +6,8 @@ void screen::init ()
     tft.begin(tft.readID());
     tft.setRotation(0);
 }
+
+void screen::draw_bg()
+{
+  tft.fillScreen(TFT_BLACK);  
+}
