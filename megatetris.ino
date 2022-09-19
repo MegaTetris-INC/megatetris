@@ -13,6 +13,7 @@ Game mGame;
 //set and initialize objects
 void setup ()
 {
+    randomSeed (analogRead(A4));
     mIO.InitScreen();
     mainBoard.SetBoard(&mainPieces, mScreenHeight);
     mGame.SetGame(&mainBoard, &mainPieces, &mIO, mScreenHeight);

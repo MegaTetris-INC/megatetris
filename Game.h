@@ -7,7 +7,7 @@
 
 #include <time.h>
 
-#define WAIT_TIME 700
+#define WAIT_TIME 200
 
 class Game
 {
@@ -40,8 +40,10 @@ public:
         mPosX = (BOARD_WIDTH / 2) + mPieces->GetXInitialPosition (mPiece, mRotation);
         mPosY = mPieces->GetYInitialPosition (mPiece, mRotation);
 
-        mNextPiece = GetRand (0, 6);
-        mNextRotation = GetRand (0, 3);
+        mNextPiece = random (0, 7);
+        mNextRotation = random (0, 4);
+        // mNextPiece = GetRand (0, 6);
+        // mNextRotation = GetRand (0, 3);
     }
 
     //info of the current piece (falling down)
@@ -69,17 +71,25 @@ private:
 
 	void InitGame()
     {
-        srand ((unsigned int) time(NULL));
+        //srand ((unsigned int) time(NULL));
 
         //generates first piece
-        mPiece = GetRand (0, 6);
-        mRotation = GetRand (0, 3);
+        // mPiece = GetRand (0, 6);
+        // mRotation = GetRand (0, 3);
+
+        mPiece = random (1, 7);
+        mPiece = mPiece - random(0, 2);
+        
+        mRotation = random (0, 4);
         mPosX = (BOARD_WIDTH / 2) + mPieces->GetXInitialPosition (mPiece, mRotation);
         mPosY = mPieces->GetYInitialPosition (mPiece, mRotation);
 
         //generates next piece
-        mNextPiece = GetRand (0, 6);
-        mNextRotation = GetRand (0, 3);
+        // mNextPiece = GetRand (0, 6);
+        // mNextRotation = GetRand (0, 3);
+
+        mNextPiece = random (0, 7);
+        mNextRotation = random (0, 4);
         mNextPosX = BOARD_WIDTH + 5;
         mNextPosY = 5;	
     }
