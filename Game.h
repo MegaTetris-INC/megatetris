@@ -5,10 +5,6 @@
 #include "Pieces.h"
 #include "Board.h"
 
-#include <time.h>
-
-#define WAIT_TIME 200
-
 class Game
 {
 public:

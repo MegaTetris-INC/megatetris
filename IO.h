@@ -38,7 +38,6 @@ public:
     }
 
     //key inputs, implement later
-	int Pollkey				();
 	int Getkey				();
 	int IsKeyDown			(int pKey);
 };
