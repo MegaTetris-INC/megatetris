@@ -7,7 +7,7 @@
 #define BOARD_LINE_WIDTH 15			// Width of each of the two lines that delimit the board
 #define BLOCK_SIZE 20				// Width and Height of each block of a piece
 #define BOARD_POSITION 120			// Center position of the board from the left of the screen
-#define BOARD_WIDTH 11				// Board width in blocks 
+#define BOARD_WIDTH 10				// Board width in blocks 
 #define BOARD_HEIGHT 16				// Board height in blocks
 #define PIECE_BLOCKS 5				// Number of horizontal and vertical blocks of a matrix piece
 
@@ -78,7 +78,7 @@ public:
         }
     }
     //deletes lines that should be deleted
-	void DeletePossibleLines ()
+	void DeletePossibleLines (int& mScore)
     {
         for (int j = 0; j < BOARD_HEIGHT; j++)
         {
@@ -90,7 +90,11 @@ public:
                 i++;
             }
             //if the line is full, delete it
-            if (i == BOARD_WIDTH) DeleteLine (j);
+            if (i == BOARD_WIDTH) 
+            {
+                DeleteLine (j);
+                mScore++;
+            }
         }
     }
 	bool IsGameOver ()

@@ -38,8 +38,6 @@ public:
 
         mNextPiece = random (0, 7);
         mNextRotation = random (0, 4);
-        // mNextPiece = GetRand (0, 6);
-        // mNextRotation = GetRand (0, 3);
     }
 
     //info of the current piece (falling down)
@@ -70,8 +68,6 @@ private:
         //srand ((unsigned int) time(NULL));
 
         //generates first piece
-        // mPiece = GetRand (0, 6);
-        // mRotation = GetRand (0, 3);
 
         mPiece = random (1, 7);
         mPiece = mPiece - random(0, 2);
@@ -81,8 +77,6 @@ private:
         mPosY = mPieces->GetYInitialPosition (mPiece, mRotation);
 
         //generates next piece
-        // mNextPiece = GetRand (0, 6);
-        // mNextRotation = GetRand (0, 3);
 
         mNextPiece = random (0, 7);
         mNextRotation = random (0, 4);
@@ -138,7 +132,7 @@ private:
 
         //draw blocks from the board
         mX1 += 1;
-        for (int i = 0; i < BOARD_WIDTH-1; i++)
+        for (int i = 0; i < BOARD_WIDTH; i++)
         {
             for (int j = 0; j < BOARD_HEIGHT; j++)
             {	
