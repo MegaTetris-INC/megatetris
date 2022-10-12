@@ -1,26 +1,14 @@
 #include "Game.h"
 #include "pitches.h"
-//#include "Tune.h"
 
 //pins
 int KeyboardPin = A5;
 int RandomSeedPin = A4;
-int BuzzerSongPin = 13;
+int BuzzerSongPin = A4;
 
 //music variables
-unsigned long previousMillis = 0;
-unsigned long interval = 500;
 int thisNote = -1;
-
-
-// // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
-// // there are two values per note (pitch and duration), so for each note there are four bytes
-// int notes=sizeof(melody)/sizeof(melody[0])/2; 
-// // this calculates the duration of a whole note in ms (60s/tempo)*4 beats
-// int wholenote = (60000 * 4) / tempo;
-// int divider = 0, noteDuration = 0;
-// int thisNote = 0;
-
+int noteDuration = 0;
 
 IO mIO;
 Pieces mainPieces;
@@ -44,86 +32,55 @@ unsigned long tuneTimer = 0;
 void setup ()
 {
    Serial.begin(9600);
-//    //music setup
-//      // Timer 1
-//     noInterrupts();
-//     TCCR1A = 0;
-//     TCCR1B = 0;
+   //music setup
+     //Timer 1
+    noInterrupts();
+    TCCR1A = 0;
+    TCCR1B = 0;
   
-//     TCNT1 = 48000; 
-//     TCCR1B |= (1 << CS12);
-//     TIMSK1 |= (1 << TOIE1);
-//     interrupts();    
+    TCNT1 = 48000; 
+    TCCR1B |= (1 << CS12);
+    TIMSK1 |= (1 << TOIE1);
+    interrupts();    
 
     randomSeed (analogRead(RandomSeedPin));
     mIO.InitScreen();
     NewGame ();
 }
 
-// ISR(TIMER1_OVF_vect)        
-// {
-//   TCNT1 = 48000;            
-//   thisNote += 1;
-//   if(thisNote==64) thisNote=0;
-//   //iterate over the notes of the melody:
-//     /*
-//       to calculate the note duration, take one second divided by the note type.
-//       e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-//     */
-//     int noteDuration = 1000/noteDurations[thisNote];
-//     tone(BuzzerSongPin, melody[thisNote],noteDuration);
-//     /*
-//       to distinguish the notes, set a minimum time between them.
-//       the note's duration + 30% seems to work well:
-//      */
-//     int pauseBetweenNotes = noteDuration * 1.30;
-//     //tone(A5, 0,pauseBetweenNotes);
-//     delay(pauseBetweenNotes);
+ISR(TIMER1_OVF_vect)        
+{
+  TCNT1 = 48000;            
+  thisNote += 1;
+  if(thisNote==64) thisNote=0;
+  //iterate over the notes of the melody:
+    /*
+      to calculate the note duration, take one second divided by the note type.
+      e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+    */
+    int noteDuration = 1000/noteDurations[thisNote];
+    tone(BuzzerSongPin, melody[thisNote], noteDuration);
+    /*
+      to distinguish the notes, set a minimum time between them.
+      the note's duration + 30% seems to work well:
+     */
+    //int pauseBetweenNotes = noteDuration * 1.30;
+    //tone(A5, 0,pauseBetweenNotes);
+    //delay(pauseBetweenNotes);
    
-//     //noTone(A5); //stop the tone playing:
-// //  }
-// //  digitalWrite(A5,LOW);
-// }
+    //noTone(BuzzerSongPin); //stop the tone playing:
+//  }
+//  digitalWrite(A5,LOW);
+}
 
 
 //game loop
 void loop ()
-{
+{    
     int keyRead = analogRead(KeyboardPin);
-    Keys mKey; //= mIO.Getkey(keyRead);
+    Keys mKey;
 
-    //PlayTune ();
-
-    // isKeyPressed = (!(mKey == NO_PRESS));
-
-    // if (isKeyPressed)
-    // {
-    //     Serial.println(keyRead);
-    //     if ((millis() - keyTimer) < KEY_PRESS_TIME)
-    //     {
-    //         mKey = NO_PRESS;
-    //     }
-    //     else
-    //     {
-    //         keyTimer = millis();
-    //     }
-    // }
-
-    // if ((mKey != NO_PRESS) && !isKeyPressed)
-    // {
-    //     isKeyPressed = true;
-    //     keyTimer = millis();
-    // }
-
-    // if (isKeyPressed && (millis() - keyTimer < KEY_PRESS_TIME))
-    // {
-    //   Serial.println(mKey);
-    //     mKey = NO_PRESS;
-    // }
-    // else
-    // {
-    //     isKeyPressed = false;
-    // }
+    Serial.println(keyRead);
 
     if (millis() - keyTimer >= KEY_PRESS_TIME)
     {   
@@ -162,28 +119,6 @@ void loop ()
                     mGame.mPosY++;	
                 break;
             }
-
-            //hard drop
-            // case (OK):
-            // {
-            //     // Check collision from up to down
-            //     while (mainBoard.IsPossibleMovement(mGame.mPosX, mGame.mPosY, mGame.mPiece, mGame.mRotation)) { mGame.mPosY++; }
-
-            //     mainBoard.StorePiece (mGame.mPosX, mGame.mPosY - 1, mGame.mPiece, mGame.mRotation);
-
-            //     mainBoard.DeletePossibleLines ();
-
-            //     if (mainBoard.IsGameOver())
-            //     {
-            //         isGameOver = true;
-            //         GameOverScreen ();
-            //     }
-            //     else
-            //     {
-            //         mGame.CreateNewPiece();
-            //     }
-            //     break;
-            // }
 
             //rotation
             case (UP):
@@ -254,45 +189,7 @@ void NewGame ()
 {
     score = 0;
     mIO.FillBG (TFT_WHITE);
-    mainBoard.SetBoard(&mainPieces, SCREEN_HEIGHT);
-    mGame.SetGame(&mainBoard, &mainPieces, &mIO, SCREEN_HEIGHT);
+    mainBoard.SetBoard(&mainPieces);
+    mGame.SetGame(&mainBoard, &mainPieces, &mIO);
     mGame.DrawScene();
 }
-
-// void PlayTune ()
-// {
-//     // iterate over the notes of the melody. 
-//     // Remember, the array is twice the number of notes (notes + durations)
-//     //for (int thisNote = 0; thisNote < notes * 2; thisNote = thisNote + 2) {
-
-//     if (millis () - tuneTimer >= noteDuration)
-//     {
-//         // calculates the duration of each note
-//         divider = melody[thisNote + 1];
-//         if (divider > 0)
-//         {
-//             // regular note, just proceed
-//             noteDuration = (wholenote) / divider;
-//         } 
-//         else if (divider < 0) 
-//         {
-//             // dotted notes are represented with negative durations!!
-//             noteDuration = (wholenote) / abs(divider);
-//             noteDuration *= 1.5; // increases the duration in half for dotted notes
-//         }
-
-//         // we only play the note for 90% of the duration, leaving 10% as a pause
-//         tone(BuzzerSongPin, melody[thisNote], noteDuration*0.9);
-
-        
-//         // Wait for the specief duration before playing the next note.
-//         //delay(noteDuration);
-
-//         // stop the waveform generation before the next note.
-//         noTone(BuzzerSongPin);
-
-//         thisNote += 2;
-//         tuneTimer = 0;
-//     }
-//     //}
-// }

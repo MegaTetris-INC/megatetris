@@ -2,6 +2,7 @@
 #define _BOARD_H_
 
 #include "Pieces.h"
+#include "IO.h"
 
 /*ajustar conforme necessidade*/
 #define BOARD_LINE_WIDTH 15			// Width of each of the two lines that delimit the board
@@ -14,9 +15,10 @@
 class Board
 {
 public:
-    void SetBoard(Pieces *pPieces, int pScreenHeight)
+    // void SetBoard(Pieces *pPieces, int pScreenHeight)
+    void SetBoard(Pieces *pPieces)
     {
-        mScreenHeight = pScreenHeight;
+        //mScreenHeight = pScreenHeight;
         mPieces = pPieces;
         InitBoard();
     }
@@ -28,7 +30,7 @@ public:
     }
 	int GetYPosInPixels (int pPos)
     {
-        return ( (mScreenHeight - (BLOCK_SIZE * BOARD_HEIGHT)) + (pPos * BLOCK_SIZE) );
+        return ( (SCREEN_HEIGHT - (BLOCK_SIZE * BOARD_HEIGHT)) + (pPos * BLOCK_SIZE) );
     }
 
 	bool IsFreeBlock (int pX, int pY)
@@ -110,9 +112,9 @@ public:
 private:
 
 	enum { POS_FREE, POS_FILLED };			// POS_FREE = free position of the board; POS_FILLED = filled position of the board
-	int mBoard [BOARD_WIDTH][BOARD_HEIGHT];	// Board that contains the pieces
+	byte mBoard [BOARD_WIDTH][BOARD_HEIGHT];	// Board that contains the pieces
 	Pieces *mPieces;
-	int mScreenHeight;
+	//int mScreenHeight;
 
 	void InitBoard()
     {

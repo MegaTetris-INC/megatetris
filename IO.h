@@ -19,7 +19,7 @@ private:
 public:
     void InitScreen()
     {
-        tft.reset();
+        //tft.reset();
         tft.begin(tft.readID());
         tft.setRotation(0);
     }

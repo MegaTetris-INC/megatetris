@@ -132,7 +132,7 @@ int melody[] = {
 };
 
 //note durations: 4 = quarter note, 8 = eighth note, etc
-int noteDurations[] = {
+byte noteDurations[] = {
   8,8,8,8,8,16,16,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
   8,4,8,8,16,16,8,8,8,8,8,8,8,16,16,8,8,8,8,8,8,8,8,8,8,8,8,8,8,4,4,
 };
