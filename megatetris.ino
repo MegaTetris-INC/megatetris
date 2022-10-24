@@ -9,6 +9,8 @@ int BuzzerSongPin = A4;
 //music variables
 int thisNote = -1;
 int noteDuration = 0;
+enum SongStates : byte {STOP, PLAY, PAUSE};
+SongStates songstate = STOP;
 
 IO mIO;
 Pieces mainPieces;
@@ -23,7 +25,6 @@ int score = 0;
 //timers
 unsigned long waitTimer = 0;
 unsigned long keyTimer = 0;
-unsigned long tuneTimer = 0;
 
 #define WAIT_TIME 700
 #define KEY_PRESS_TIME 100
@@ -50,27 +51,29 @@ void setup ()
 
 ISR(TIMER1_OVF_vect)        
 {
-  TCNT1 = 48000;            
-  thisNote += 1;
-  if(thisNote==64) thisNote=0;
-  //iterate over the notes of the melody:
-    /*
-      to calculate the note duration, take one second divided by the note type.
-      e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-    */
-    int noteDuration = 1000/noteDurations[thisNote];
-    tone(BuzzerSongPin, melody[thisNote], noteDuration);
-    /*
-      to distinguish the notes, set a minimum time between them.
-      the note's duration + 30% seems to work well:
-     */
-    //int pauseBetweenNotes = noteDuration * 1.30;
-    //tone(A5, 0,pauseBetweenNotes);
-    //delay(pauseBetweenNotes);
-   
-    //noTone(BuzzerSongPin); //stop the tone playing:
-//  }
-//  digitalWrite(A5,LOW);
+    switch (songstate)
+    {
+    case STOP:
+    {
+        thisNote = -1;
+        break;
+    }
+    case PLAY:
+    {
+        TCNT1 = 48000;
+        thisNote += 1;
+        if(thisNote==64) thisNote=0;
+
+        //iterate over the notes of the melody:
+        int noteDuration = 1000/noteDurations[thisNote];
+        tone(BuzzerSongPin, melody[thisNote], noteDuration);
+        break;
+    }
+    case PAUSE:
+        break;
+    default:
+        break;
+    }
 }
 
 
@@ -102,7 +105,7 @@ void loop ()
             {
                 if (mainBoard.IsPossibleMovement (mGame.mPosX + 1, mGame.mPosY, mGame.mPiece, mGame.mRotation))
                     mGame.mPosX++;
-                    break;
+                break;
             }
 
             case (LEFT): 
@@ -179,6 +182,7 @@ void loop ()
 
 void GameOverScreen ()
 {
+    songstate = STOP;
     mIO.FillBG (TFT_BLACK);
     mIO.WriteText ("Game Over", 4, TFT_WHITE, (SCREEN_WIDTH+1)/2, (SCREEN_HEIGHT+1)/4);
     mIO.WriteText ("Score: " + String(score), 3, TFT_WHITE, (SCREEN_WIDTH+1)/2, (SCREEN_HEIGHT+1)/2);
@@ -192,4 +196,5 @@ void NewGame ()
     mainBoard.SetBoard(&mainPieces);
     mGame.SetGame(&mainBoard, &mainPieces, &mIO);
     mGame.DrawScene();
+    songstate = PLAY;
 }

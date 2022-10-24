@@ -111,8 +111,8 @@ public:
 
 private:
 
-	enum { POS_FREE, POS_FILLED };			// POS_FREE = free position of the board; POS_FILLED = filled position of the board
-	byte mBoard [BOARD_WIDTH][BOARD_HEIGHT];	// Board that contains the pieces
+	enum Cell : byte{ POS_FREE, POS_FILLED };			// POS_FREE = free position of the board; POS_FILLED = filled position of the board
+	Cell mBoard [BOARD_WIDTH][BOARD_HEIGHT];	// Board that contains the pieces
 	Pieces *mPieces;
 	//int mScreenHeight;
 
