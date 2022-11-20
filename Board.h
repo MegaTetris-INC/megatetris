@@ -15,10 +15,8 @@
 class Board
 {
 public:
-    // void SetBoard(Pieces *pPieces, int pScreenHeight)
     void SetBoard(Pieces *pPieces)
     {
-        //mScreenHeight = pScreenHeight;
         mPieces = pPieces;
         InitBoard();
     }
@@ -80,7 +78,7 @@ public:
         }
     }
     //deletes lines that should be deleted
-	void DeletePossibleLines (int& mScore)
+	void DeletePossibleLines (int& mScore, int& mSpeedTime)
     {
         for (int j = 0; j < BOARD_HEIGHT; j++)
         {
@@ -96,6 +94,7 @@ public:
             {
                 DeleteLine (j);
                 mScore++;
+                if (mSpeedTime > 100) mSpeedTime -= 70;
             }
         }
     }
@@ -114,7 +113,6 @@ private:
 	enum Cell : byte{ POS_FREE, POS_FILLED };			// POS_FREE = free position of the board; POS_FILLED = filled position of the board
 	Cell mBoard [BOARD_WIDTH][BOARD_HEIGHT];	// Board that contains the pieces
 	Pieces *mPieces;
-	//int mScreenHeight;
 
 	void InitBoard()
     {

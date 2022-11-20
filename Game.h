@@ -43,10 +43,6 @@ public:
 	int mPiece, mRotation;
 
 private:
-
-    //screen height in pixels
-	//int mScreenHeight;
-
     //info of the next piece
 	byte mNextPosX, mNextPosY;
 	byte mNextPiece, mNextRotation;
@@ -86,13 +82,6 @@ private:
         {
             for (int j = 0; j < PIECE_BLOCKS; j++)
             {
-                // switch (mPieces->GetBlockType (pPiece, pRotation, j, i))
-                // {
-                //     //case 0: mColor = TFT_BLACK; break;
-                //     case 1: mColor = TFT_GREEN; break;
-                //     case 2: mColor = TFT_BLUE; break;
-                // }
-                
                 if (mPieces->GetBlockType (pPiece, pRotation, j, i) != 0)
                     mIO->DrawRectangle	(mPixelsX + i * BLOCK_SIZE, 
                                         mPixelsY + j * BLOCK_SIZE, 
@@ -109,16 +98,10 @@ private:
         int mX1 = BOARD_POSITION - (BLOCK_SIZE * (BOARD_WIDTH / 2)) - 1;
         int mX2 = BOARD_POSITION + (BLOCK_SIZE * (BOARD_WIDTH / 2));
         int mY = SCREEN_HEIGHT - (BLOCK_SIZE * BOARD_HEIGHT);
-        
-        // Check that the vertical margin is not to small
-        //assert (mY > MIN_VERTICAL_MARGIN);
 
         //draw board limits
         mIO->DrawRectangle (mX1 - BOARD_LINE_WIDTH, mY, mX1, SCREEN_HEIGHT - 1, TFT_BLUE);
         mIO->DrawRectangle (mX2, mY, mX2 + BOARD_LINE_WIDTH, SCREEN_HEIGHT - 1, TFT_BLUE);
-        
-        // Check that the horizontal margin is not to small
-        //assert (mX1 > MIN_HORIZONTAL_MARGIN);
 
         //draw blocks from the board
         mX1 += 1;
